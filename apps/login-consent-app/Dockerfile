@@ -1,7 +1,10 @@
+# syntax=docker/dockerfile:1
+
 # Build context is the repo root (see docker-compose.yml) so Yarn can
 # resolve the workspace lockfile across all apps.
 
-FROM node:20-alpine AS build
+# --- Base stage ---
+FROM node:20-alpine AS base
 WORKDIR /app
 # Workspace deps hoist to the root node_modules - make their bins resolvable
 # from any nested workspace's package.json scripts (e.g. tsc).
@@ -10,15 +13,27 @@ RUN corepack enable
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY apps/web/package.json apps/web/package.json
 COPY apps/login-consent-app/package.json apps/login-consent-app/package.json
-RUN yarn install --immutable
+
+# --- Build stage ---
+FROM base AS build
+# Yarn's global cache (enableGlobalCache: true) lives under ~/.yarn/berry -
+# mount it so repeat builds don't re-download unchanged packages.
+RUN --mount=type=cache,target=/root/.yarn/berry/cache,sharing=locked \
+    yarn install --immutable
 COPY apps/login-consent-app/tsconfig.json apps/login-consent-app/tsconfig.json
 COPY apps/login-consent-app/src apps/login-consent-app/src
 RUN yarn workspace login-consent-app build
 
-FROM node:20-alpine
+# --- Prod deps stage ---
+FROM base AS prod-deps
+RUN --mount=type=cache,target=/root/.yarn/berry/cache,sharing=locked \
+    yarn workspaces focus login-consent-app --production
+
+# --- Runtime stage ---
+FROM node:20-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/apps/login-consent-app/package.json ./apps/login-consent-app/package.json
 COPY --from=build /app/apps/login-consent-app/dist ./apps/login-consent-app/dist
 EXPOSE 3001
