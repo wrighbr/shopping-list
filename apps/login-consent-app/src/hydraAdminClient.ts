@@ -48,7 +48,10 @@ export function getLoginRequest(challenge: string): Promise<LoginRequest> {
 	);
 }
 
-export function acceptLoginRequest(challenge: string, subject: string): Promise<RedirectResponse> {
+export function acceptLoginRequest(
+	challenge: string,
+	subject: string
+): Promise<RedirectResponse> {
 	return adminFetch<RedirectResponse>(
 		`/admin/oauth2/auth/requests/login/accept?challenge=${encodeURIComponent(challenge)}`,
 		{
@@ -85,7 +88,9 @@ export function acceptConsentRequest(
 	);
 }
 
-export function acceptLogoutRequest(challenge: string): Promise<RedirectResponse> {
+export function acceptLogoutRequest(
+	challenge: string
+): Promise<RedirectResponse> {
 	return adminFetch<RedirectResponse>(
 		`/admin/oauth2/auth/requests/logout/accept?challenge=${encodeURIComponent(challenge)}`,
 		{ method: 'PUT' }

@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { acceptConsentRequest, getConsentRequest } from '../hydraAdminClient.js';
+import {
+	acceptConsentRequest,
+	getConsentRequest,
+} from '../hydraAdminClient.js';
 
 export const consentRouter = Router();
 
@@ -48,7 +51,11 @@ consentRouter.post('/consent', async (req, res, next) => {
 		const { scope } = req.body as { scope?: string };
 		const grantScope = scope ? scope.split(' ') : [];
 
-		const { redirect_to } = await acceptConsentRequest(challenge, grantScope, consentRequest.subject);
+		const { redirect_to } = await acceptConsentRequest(
+			challenge,
+			grantScope,
+			consentRequest.subject
+		);
 		res.redirect(redirect_to);
 	} catch (error) {
 		next(error);

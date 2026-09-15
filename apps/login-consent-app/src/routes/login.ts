@@ -19,7 +19,10 @@ loginRouter.get('/login', async (req, res, next) => {
 		const loginRequest = await getLoginRequest(challenge);
 
 		if (loginRequest.skip) {
-			const { redirect_to } = await acceptLoginRequest(challenge, loginRequest.subject);
+			const { redirect_to } = await acceptLoginRequest(
+				challenge,
+				loginRequest.subject
+			);
 			res.redirect(redirect_to);
 			return;
 		}
@@ -45,7 +48,10 @@ loginRouter.get('/login', async (req, res, next) => {
 loginRouter.post('/login', async (req, res, next) => {
 	try {
 		const challenge = String(req.query.login_challenge ?? '');
-		const { email, password } = req.body as { email?: string; password?: string };
+		const { email, password } = req.body as {
+			email?: string;
+			password?: string;
+		};
 
 		if (email !== TEST_USER_EMAIL || password !== TEST_USER_PASSWORD) {
 			res.status(401).send('Invalid credentials');

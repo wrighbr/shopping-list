@@ -1,6 +1,6 @@
-node_modules
-dist
-dist-ssr
+**/node_modules
+**/dist
+**/dist-ssr
 .git
 .yarn
 .vscode

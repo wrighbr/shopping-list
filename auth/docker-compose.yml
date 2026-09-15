@@ -45,7 +45,8 @@ services:
 
   login-consent:
     build:
-      context: ./login-consent-app
+      context: ..
+      dockerfile: apps/login-consent-app/Dockerfile
     environment:
       PORT: 3001
       HYDRA_ADMIN_URL: http://hydra:4445
