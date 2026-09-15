@@ -1,0 +1,30 @@
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.email {
+	color: #4b5563;
+	font-size: 0.9rem;
+}
+
+.button {
+	padding: 0.4rem 0.9rem;
+	font-size: 0.9rem;
+	font-weight: 600;
+	background: #ffffff;
+	color: #4f46e5;
+	border: 1.5px solid #4f46e5;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.15s;
+}
+
+.button:hover {
+	background: #eef2ff;
+}
