@@ -33,6 +33,14 @@ e.g. `yarn workspace login-consent-app build`.
 This project uses [Biome](https://biomejs.dev) for linting and formatting,
 configured once in the root `biome.json` and applied across both apps.
 
+## Testing
+
+Both apps have Jest test suites:
+
+- `yarn test` – run both workspaces' suites sequentially
+- `yarn workspace web test` / `yarn workspace login-consent-app test` – run
+  a single workspace's suite
+
 ## Docker
 
 Each app has its own multi-stage `Dockerfile` (`apps/web/Dockerfile`,
@@ -51,15 +59,21 @@ cp .env.example .env
 yarn stack:up
 ```
 
-`stack:up` runs `docker compose up -d --build` in the background; use
+`stack:up` runs `docker compose up -d --build`, then automatically registers
+both OAuth2 clients against the running Hydra admin API via
+`auth/register-clients.sh` - no manual client setup needed. Use
 `yarn stack:logs` to tail logs and `yarn stack:down` to tear everything down.
-Once it's up, register the OAuth2 clients against the running Hydra admin
-API (one-off, only needed after a fresh Postgres volume):
+
+If you ever need to re-register or rotate a single client by hand, the
+underlying scripts still work standalone:
 
 ```sh
 ./auth/create-web-client.sh
 ./auth/create-test-client.sh
 ```
+
+You can also sanity-check the full OAuth2 flow end-to-end with
+`./auth/verify-e2e.sh` once the stack is up.
 
 This serves the frontend at http://localhost:5173, matching the redirect URI
 of the `shopping-list-web` OAuth2 client, the login-consent app at
