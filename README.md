@@ -40,20 +40,36 @@ Each app has its own multi-stage `Dockerfile` (`apps/web/Dockerfile`,
 Yarn can resolve the workspace lockfile. `apps/web` serves its build output
 with nginx (`apps/web/nginx.conf`, SPA-aware fallback to `index.html`).
 
+The root `docker-compose.yml` brings up the *entire* local dev stack in one
+shot: the frontend, the login-consent app, and the Ory Hydra stack it
+depends on (Postgres + Hydra migrate/serve). Copy the env template and fill
+in real values first:
+
 ```sh
-docker compose up --build
+cp .env.example .env
+# edit .env: POSTGRES_PASSWORD, SECRETS_SYSTEM, TEST_USER_EMAIL, TEST_USER_PASSWORD
+yarn stack:up
+```
+
+`stack:up` runs `docker compose up -d --build` in the background; use
+`yarn stack:logs` to tail logs and `yarn stack:down` to tear everything down.
+Once it's up, register the OAuth2 clients against the running Hydra admin
+API (one-off, only needed after a fresh Postgres volume):
+
+```sh
+./auth/create-web-client.sh
+./auth/create-test-client.sh
 ```
 
 This serves the frontend at http://localhost:5173, matching the redirect URI
-of the `shopping-list-web` OAuth2 client used by the local Hydra stack in
-`auth/` (see `auth/create-web-client.sh`). Override the Hydra-related build
-args in `docker-compose.yml` (or pass `--build-arg`) if pointing at a
-different deployment:
+of the `shopping-list-web` OAuth2 client, the login-consent app at
+http://localhost:3001, and Hydra's public/admin APIs at
+http://localhost:4444 / http://localhost:4445. Override the Hydra-related
+build args in `docker-compose.yml` (or pass `--build-arg`) if pointing the
+frontend at a different deployment:
 
 - `VITE_HYDRA_PUBLIC_URL`
 - `VITE_HYDRA_CLIENT_ID`
 - `VITE_HYDRA_SCOPE`
 - `VITE_HYDRA_REDIRECT_URI`
 
-The `login-consent-app` image is built via `auth/docker-compose.yml` (see
-that file's `login-consent` service).

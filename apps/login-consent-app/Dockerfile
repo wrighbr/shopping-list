@@ -1,4 +1,4 @@
-# Build context is the repo root (see auth/docker-compose.yml) so Yarn can
+# Build context is the repo root (see docker-compose.yml) so Yarn can
 # resolve the workspace lockfile across all apps.
 
 FROM node:20-alpine AS build

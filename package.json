@@ -10,7 +10,10 @@
     "build": "yarn workspace web build && yarn workspace login-consent-app build",
     "lint": "biome check apps/web/src apps/login-consent-app/src",
     "lint:fix": "biome check --write apps/web/src apps/login-consent-app/src",
-    "format": "biome format --write apps/web/src apps/login-consent-app/src"
+    "format": "biome format --write apps/web/src apps/login-consent-app/src",
+    "stack:up": "docker compose up -d --build",
+    "stack:down": "docker compose down",
+    "stack:logs": "docker compose logs -f"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.13",
