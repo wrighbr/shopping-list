@@ -1,0 +1,74 @@
+.item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.6rem 0.75rem;
+	border-radius: 8px;
+	background: #f9fafb;
+	border: 1.5px solid #e5e7eb;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+}
+
+.item:hover {
+	background: #f3f4f6;
+}
+
+.item.completed {
+	background: #f0fdf4;
+	border-color: #bbf7d0;
+}
+
+.label {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	cursor: pointer;
+	flex: 1;
+	min-width: 0;
+}
+
+.checkbox {
+	width: 1.1rem;
+	height: 1.1rem;
+	accent-color: #4f46e5;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+
+.name {
+	font-size: 1rem;
+	color: #1a1a2e;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition:
+		color 0.15s,
+		text-decoration 0.15s;
+}
+
+.completed .name {
+	text-decoration: line-through;
+	color: #9ca3af;
+}
+
+.removeButton {
+	background: none;
+	border: none;
+	color: #d1d5db;
+	font-size: 0.85rem;
+	cursor: pointer;
+	padding: 0.25rem 0.4rem;
+	border-radius: 4px;
+	transition:
+		color 0.15s,
+		background 0.15s;
+	flex-shrink: 0;
+	margin-left: 0.5rem;
+}
+
+.removeButton:hover {
+	color: #ef4444;
+	background: #fee2e2;
+}
