@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+.git
+.yarn
+.vscode
+.idea
+*.local
+*.log
+.DS_Store
+auth
+README.md

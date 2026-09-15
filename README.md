@@ -18,3 +18,23 @@ This project uses [Biome](https://biomejs.dev) for linting and formatting, confi
 - `yarn lint` – check for lint issues (`biome check src`)
 - `yarn lint:fix` – check and automatically fix issues (`biome check --write src`)
 - `yarn format` – format the source code (`biome format --write src`)
+
+## Docker
+
+A multi-stage `Dockerfile` builds the app with Vite and serves the static output
+with nginx (`nginx.conf`, SPA-aware fallback to `index.html`).
+
+```sh
+docker compose up --build
+```
+
+This serves the app at http://localhost:5173, matching the redirect URI of the
+`shopping-list-web` OAuth2 client used by the local Hydra stack in `auth/`
+(see `auth/create-web-client.sh`). Override the Hydra-related build args in
+`docker-compose.yml` (or pass `--build-arg`) if pointing at a different
+deployment:
+
+- `VITE_HYDRA_PUBLIC_URL`
+- `VITE_HYDRA_CLIENT_ID`
+- `VITE_HYDRA_SCOPE`
+- `VITE_HYDRA_REDIRECT_URI`

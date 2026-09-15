@@ -1,0 +1,11 @@
+services:
+  shopping-list:
+    build:
+      context: .
+      args:
+        VITE_HYDRA_PUBLIC_URL: ${VITE_HYDRA_PUBLIC_URL:-http://localhost:4444}
+        VITE_HYDRA_CLIENT_ID: ${VITE_HYDRA_CLIENT_ID:-shopping-list-web}
+        VITE_HYDRA_SCOPE: ${VITE_HYDRA_SCOPE:-openid offline profile email}
+        VITE_HYDRA_REDIRECT_URI: ${VITE_HYDRA_REDIRECT_URI:-http://localhost:5173/}
+    ports:
+      - "5173:80"
