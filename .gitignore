@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .yarn/*
+
+# Ory Hydra local dev stack secrets
+auth/.env
