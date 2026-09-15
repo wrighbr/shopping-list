@@ -11,6 +11,7 @@
     "lint": "biome check apps/web/src apps/login-consent-app/src",
     "lint:fix": "biome check --write apps/web/src apps/login-consent-app/src",
     "format": "biome format --write apps/web/src apps/login-consent-app/src",
+    "test": "yarn workspace login-consent-app test && yarn workspace web test",
     "stack:up": "docker compose up -d --build && ./auth/register-clients.sh",
     "stack:down": "docker compose down",
     "stack:logs": "docker compose logs -f"
