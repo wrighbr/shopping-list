@@ -50,12 +50,10 @@ with nginx (`apps/web/nginx.conf`, SPA-aware fallback to `index.html`).
 
 The root `docker-compose.yml` brings up the *entire* local dev stack in one
 shot: the frontend, the login-consent app, and the Ory Hydra stack it
-depends on (Postgres + Hydra migrate/serve). Copy the env template and fill
-in real values first:
+depends on (Postgres + Hydra migrate/serve). The single command to bring the
+stack up is:
 
 ```sh
-cp .env.example .env
-# edit .env: POSTGRES_PASSWORD, SECRETS_SYSTEM, TEST_USER_EMAIL, TEST_USER_PASSWORD
 yarn stack:up
 ```
 
