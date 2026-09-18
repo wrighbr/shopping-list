@@ -58,6 +58,27 @@ describe('loginRouter', () => {
 		expect(response.headers.location).toBe('http://hydra/callback');
 	});
 
+	it('GET /login accepts an already-authenticated subject even when skip is false', async () => {
+		getLoginRequestMock.mockResolvedValue({
+			challenge: 'c1',
+			skip: false,
+			subject: 'test@example.com',
+		});
+		acceptLoginRequestMock.mockResolvedValue({
+			redirect_to: 'http://hydra/callback',
+		});
+
+		const app = buildApp();
+		const response = await request(app).get('/login?login_challenge=c1');
+
+		expect(acceptLoginRequestMock).toHaveBeenCalledWith(
+			'c1',
+			'test@example.com'
+		);
+		expect(response.status).toBe(302);
+		expect(response.headers.location).toBe('http://hydra/callback');
+	});
+
 	it('GET /login renders a sign-in form when not skipped', async () => {
 		getLoginRequestMock.mockResolvedValue({
 			challenge: 'c1',

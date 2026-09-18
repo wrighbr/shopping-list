@@ -17,11 +17,12 @@ loginRouter.get('/login', async (req, res, next) => {
 		}
 
 		const loginRequest = await getLoginRequest(challenge);
+		const activeSubject = loginRequest.subject || TEST_USER_EMAIL;
 
-		if (loginRequest.skip) {
+		if (loginRequest.skip || loginRequest.subject) {
 			const { redirect_to } = await acceptLoginRequest(
 				challenge,
-				loginRequest.subject
+				loginRequest.subject || TEST_USER_EMAIL
 			);
 			res.redirect(redirect_to);
 			return;
@@ -33,7 +34,7 @@ loginRouter.get('/login', async (req, res, next) => {
 				<body>
 					<h1>Sign in</h1>
 					<form method="post" action="/login?login_challenge=${challenge}">
-						<label>Email <input type="email" name="email" value="${TEST_USER_EMAIL}" /></label><br/>
+						<label>Email <input type="email" name="email" value="${activeSubject}" /></label><br/>
 						<label>Password <input type="password" name="password" /></label><br/>
 						<button type="submit">Sign in</button>
 					</form>
