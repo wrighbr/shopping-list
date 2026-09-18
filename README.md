@@ -85,3 +85,12 @@ frontend at a different deployment:
 - `VITE_HYDRA_SCOPE`
 - `VITE_HYDRA_REDIRECT_URI`
 
+## Parts deliberately left out
+
+* No persistent storage for the shopping list app.
+* The application is not designed for multi-user use.
+
+## Parts I don’t trust
+* Mostly around security:
+  * It is vulnerable to cross-site scripting (XSS) attacks.
+  * Credentials are exposed through environment variables/hardcoded values.
